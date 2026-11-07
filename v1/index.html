@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GODDESS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <!-- 上部: 女神 -->
+  <header id="top">
+    <button id="drawer-left" class="drawer-btn" aria-label="戦況">☰</button>
+    <div class="goddess" id="goddess-box" title="あなた(女神)">
+      <div class="gface"><img id="g-face" alt=""><img id="g-face-dark" alt=""></div>
+      <div class="gtext"><div class="gname">女神 <span class="lv" id="t-lv">Lv1</span></div><div class="lvbar"><span id="t-lvbar"></span></div></div>
+    </div>
+    <div class="stat faith" id="t-faith-box" title="信仰: 人族の祈り。介入に使う。人族がこわがっているほど多く集まる">
+      <span class="lbl">信仰</span><b id="t-faith">0</b><small id="t-income">+0/月</small>
+    </div>
+    <div class="stat sus" id="t-aware-box" title="疑念: 女神の正体への疑い。邪神の囁きや運命の操作で増える。高くなると物語が進み、最後は反逆される">
+      <span class="lbl">疑念</span><span class="abar"><span id="t-aware"></span></span><b id="t-aware-n">0</b>
+    </div>
+    <div class="date-box"><span id="t-date">—</span><span id="t-season" class="season">—</span><small id="t-waryear"></small></div>
+    <div class="top-btns">
+      <button id="btn-save">セーブ</button>
+      <button id="btn-load">ロード</button>
+      <button id="btn-menu">メニュー</button>
+      <div id="menu">
+        <button data-act="opening">オープニングをもう一度見る</button>
+        <button data-act="tutorial">チュートリアルをもう一度</button>
+        <button data-act="mission">女神の使命</button>
+        <button data-act="help">遊び方</button>
+        <button data-act="export">セーブをファイルに書き出す</button>
+        <button data-act="import">ファイルから読みこむ</button>
+        <button data-act="title">タイトルにもどる</button>
+      </div>
+    </div>
+    <button id="drawer-right" class="drawer-btn" aria-label="報告">ⓘ</button>
+  </header>
+
+  <!-- 左: 戦況 -->
+  <aside id="left" class="panel">
+    <nav id="tabs"><button data-tab="war">戦況</button><button data-tab="chars">人物</button><button data-tab="history">年表</button></nav>
+    <div id="list" class="scroll"></div>
+  </aside>
+
+  <!-- 中央: 人族 VS 魔族 -->
+  <main id="mapwrap">
+    <div id="map"></div>
+    <div id="warbar">
+      <div class="wb-side h"><span class="wb-name">人族陣営</span><b id="wb-hp">0</b><small id="wb-hc"></small></div>
+      <div class="wb-track"><div class="wb-zone" title="女神にとってちょうどいい範囲"></div><div class="wb-fill" id="wb-fill"></div><div class="wb-mark" id="wb-mark"></div></div>
+      <div class="wb-side d"><small id="wb-dc"></small><b id="wb-dp">0</b><span class="wb-name">魔族陣営</span></div>
+      <div class="wb-label" id="wb-label">互角</div>
+    </div>
+    <div id="alert"></div>
+    <div id="mapmode"><button data-mode="political">国</button><button data-mode="terrain">地形</button></div>
+    <div id="targeting"><span id="target-text"></span><button id="target-cancel">やめる</button></div>
+  </main>
+
+  <!-- 右: 今月の報告・詳細 -->
+  <aside id="right" class="panel">
+    <div id="detail" class="scroll"></div>
+  </aside>
+
+  <!-- 下部: 介入とニュース -->
+  <footer id="bottom">
+    <div class="logbox" data-tut="7">
+      <div id="log-filter"><span class="lbl">世界のニュース</span><button data-f="" class="on">すべて</button><button data-f="war">戦争</button><button data-f="goddess">女神</button><button data-f="person">人物</button><button data-f="politics">国</button></div>
+      <div id="log" class="scroll"></div>
+    </div>
+    <div class="controls">
+      <div id="interventions">
+        <button class="ibtn miracle" id="btn-miracle" data-cat="miracle" data-tut="4"><img class="iico" alt=""><span><b>神の奇跡</b><small>人族に希望を</small></span></button>
+        <button class="ibtn whisper" id="btn-whisper" data-cat="whisper" data-tut="5"><img class="iico" alt=""><span><b>邪神の囁き</b><small>魔族に力を</small></span></button>
+        <button class="ibtn fate" id="btn-fate" data-cat="fate" data-tut="9"><img class="iico" alt=""><span><b>運命の操作</b><small>両者を争わせる</small></span></button>
+      </div>
+      <div class="timerow" data-tut="6">
+        <span id="used-note" class="used-note"></span>
+        <button id="btn-next" class="primary next">次の月へ ▶</button>
+        <div id="speed"></div>
+      </div>
+    </div>
+    <div id="imenu"></div>
+  </footer>
+</div>
+
+<!-- タイトル -->
+<div id="title" class="overlay">
+  <div class="title-card">
+    <div class="title-logo">GODDESS</div>
+    <div class="catch">人族には希望を。魔族には憎しみを。<br>この戦争を、決して終わらせてはならない。</div>
+    <label class="seed-row"><span>世界の名前</span><input id="seed" maxlength="40"><button id="title-dice" title="ランダム">🎲</button></label>
+    <button id="title-new" class="primary">はじめから</button>
+    <button id="title-continue">つづきから</button>
+    <div id="title-save-info" class="small"></div>
+    <div id="creating">世界を創っています……</div>
+  </div>
+</div>
+
+<!-- 物語の場面(オープニング・物語・エンディング) -->
+<div id="scene" class="overlay">
+  <div class="sc-bg" id="sc-bg"></div>
+  <div class="sc-box">
+    <div class="sc-who" id="sc-who"><img id="sc-face" alt=""><span id="sc-name"></span></div>
+    <div class="sc-text" id="sc-text"></div>
+    <div class="sc-btns"><button id="sc-skip" class="link">とばす</button><button id="sc-next" class="primary">次へ ▶</button></div>
+  </div>
+</div>
+
+<!-- チュートリアル -->
+<div id="coach">
+  <div class="spot" id="coach-spot"></div>
+  <div class="bubble" id="coach-bubble">
+    <img id="coach-face" alt="">
+    <div class="bub-body"><div class="bub-name">影の側近 ノクス</div><div id="coach-text"></div>
+    <div class="bub-btns"><button id="coach-skip" class="link">チュートリアルをとばす</button><button id="coach-next" class="primary">次へ</button></div></div>
+  </div>
+</div>
+
+<!-- 使命・エンディング -->
+<div id="mission" class="overlay"><div class="mission-card" id="mission-card"></div></div>
+
+<!-- 遊び方 -->
+<div id="help" class="overlay">
+  <div class="help-card scroll">
+    <h2>遊び方</h2>
+    <p>あなたは<b>女神</b>。人族からは救世主として信じられていますが、本当は魔族を生み、魔王に力を与えた黒幕です。</p>
+    <p><b>目的</b>: 人族と魔族の戦争を終わらせず、信仰を集めつづけること。100年つづけば勝ちです。</p>
+    <h3>見るところ</h3>
+    <ul>
+      <li><b>戦況バー</b>(地図の上): 青が人族、赤が魔族。真ん中の金色の帯に入っているのがちょうどいい状態。</li>
+      <li><b>信仰</b>(上): 人族の祈り。介入に使う。人族がこわがっているほど多く集まり、人族が勝ちすぎると減る。</li>
+      <li><b>疑念</b>(上): 女神の正体への疑い。高くなると物語が進み、最後は勇者と魔王が手を組んで女神に挑んでくる。</li>
+      <li><b>今月の報告</b>(右): 戦いの結果、信仰の増減、側近のアドバイス。</li>
+    </ul>
+    <h3>やること(1か月ごと)</h3>
+    <ol>
+      <li>戦況を見る。どちらが勝ちすぎているか?</li>
+      <li>下の3つのボタンから介入を1つえらぶ(えらばなくてもいい)。</li>
+      <li>「次の月へ」を押す。軍が動いて戦う。</li>
+    </ol>
+    <ul>
+      <li><b>神の奇跡</b>: 人族を強くする。疑念はほとんど増えない。</li>
+      <li><b>邪神の囁き</b>: 魔族を強くする。疑念が増える。</li>
+      <li><b>運命の操作</b>: 両方に働きかける。和平の妨害・天災・記憶の改ざんなど。</li>
+    </ul>
+    <h3>負けになるとき</h3>
+    <p>人族か魔族のどちらかが滅びる/和平が結ばれる/神殺しの同盟に倒される。</p>
+    <p class="small">「自動」ボタンで時間を止めずに進めることもできます。地図はドラッグで移動、ホイールで拡大できます。</p>
+    <button id="help-close" class="primary">閉じる</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+<div id="bigevent"></div>
+<input type="file" id="import-file" accept=".json,application/json" hidden>
+
+<script src="lib/phaser.min.js"></script>
+<script src="assets/assets.js"></script>
+<!-- シミュレーション(計算) -->
+<script src="src/config.js"></script>
+<script src="src/core/rng.js"></script>
+<script src="src/data/data.js"></script>
+<script src="src/data/names.js"></script>
+<script src="world/terrain.js"></script>
+<script src="world/map.js"></script>
+<script src="simulation/state.js"></script>
+<script src="characters/personality.js"></script>
+<script src="characters/character.js"></script>
+<script src="characters/family.js"></script>
+<script src="nations/nation.js"></script>
+<script src="nations/ai.js"></script>
+<script src="simulation/population.js"></script>
+<script src="simulation/economy.js"></script>
+<script src="simulation/diplomacy.js"></script>
+<script src="simulation/factions.js"></script>
+<script src="combat/battle.js"></script>
+<script src="combat/army.js"></script>
+<script src="simulation/events.js"></script>
+<script src="goddess/faith.js"></script>
+<script src="goddess/powers.js"></script>
+<script src="goddess/story.js"></script>
+<script src="history/timeline.js"></script>
+<script src="simulation/time.js"></script>
+<script src="save/save.js"></script>
+<!-- 描画と画面 -->
+<script src="render/sprites.js"></script>
+<script src="render/scene.js"></script>
+<script src="ui/art.js"></script>
+<script src="ui/hud.js"></script>
+<script src="ui/panels.js"></script>
+<script src="ui/events-log.js"></script>
+<script src="ui/story-ui.js"></script>
+<script src="ui/tutorial.js"></script>
+<script src="src/main.js"></script>
+</body>
+</html>

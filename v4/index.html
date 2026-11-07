@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GODDESS 運命の書</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Cinzel:wght@600;700&family=Shippori+Mincho:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <div id="bg"></div>
+  <canvas id="war"></canvas>
+  <header id="top">
+    <div id="gface"><img src="assets/img/face_light.jpg" alt=""><img class="dark" src="assets/img/face_dark.jpg" alt=""></div>
+    <div class="tt"><div id="chap"></div><div id="stitle"></div></div>
+    <button id="btn-log">運命の記録</button>
+    <button id="btn-set" aria-label="設定">⚙</button>
+    <div id="settings">
+      <label><input type="checkbox" id="set-music" checked> 音楽</label>
+      <label><input type="checkbox" id="set-voice" checked> ボイス</label>
+      <button id="btn-title">タイトルへ</button>
+      <p class="credit">声: VOICEVOX:四国めたん / 九州そら / No.7 / 玄野武宏 / 冥鳴ひまり / 麒ヶ島宗麟 / 東北イタコ / 波音リツ / 青山龍星</p>
+    </div>
+  </header>
+  <div id="situation"><p id="sit-text"></p><p id="sit-ask"></p></div>
+  <div id="cast"></div>
+  <div id="tray"></div>
+  <div id="hint"></div>
+</div>
+
+<div id="ghost"></div>
+
+<div id="intro-video" class="overlay"><video playsinline preload="auto"></video><button class="link">とばす ▶</button></div>
+
+<div id="scene" class="overlay">
+  <div class="sc-bg" id="sc-bg"></div>
+  <div class="sc-box">
+    <div class="t-body"><img class="t-face" alt=""><div class="t-main"><div class="t-name"></div><div class="t-text"></div></div></div>
+    <div class="sc-btns"><button id="sc-skip" class="link">とばす</button><button id="sc-next" class="primary">次へ ▶</button></div>
+  </div>
+</div>
+
+<div id="fate" class="overlay"><div class="fate-card" id="fate-card"></div></div>
+<div id="logview" class="overlay"><div class="log-card" id="log-card"></div></div>
+
+<div id="title" class="overlay open">
+  <div class="title-art"></div>
+  <div class="title-box">
+    <div class="logo">GODDESS</div>
+    <div class="logo-sub">― 運命の書 ―</div>
+    <p class="catch">だれに、何をするか。<br>女神のひと押しで、物語はまったく変わる。</p>
+    <button id="btn-new" class="primary big">はじめから</button>
+    <button id="btn-cont">つづきから</button>
+    <p class="small" id="end-count"></p>
+  </div>
+</div>
+
+<div id="endmovie" class="overlay"><div class="em-bg"></div><canvas class="em-fx"></canvas><div class="em-shade"></div><div class="em-title"></div><div class="em-roll"><div class="em-inner"></div></div><button class="link em-skip">とばす ▶</button></div>
+<div id="ending" class="overlay"><div id="end-card"></div></div>
+
+<script src="js/data.js"></script>
+<script src="js/saga.js"></script>
+<script src="js/voices.js"></script>
+<script src="js/bgm.js"></script>
+<script src="js/voice.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/ui.js"></script>
+</body>
+</html>

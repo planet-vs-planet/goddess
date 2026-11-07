@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GODDESS 三戦線</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header id="top">
+    <div id="gface" class="gface" title="女神アステリア(あなた)"><img src="assets/img/face_light.jpg" alt=""><img class="dark" src="assets/img/face_dark.jpg" alt=""></div>
+    <div class="meter faith" id="m-faith" title="信仰: 人族の祈り。介入に使う。前線がまんなかにあるほど多く集まる">
+      <span class="lbl">信仰</span><b id="faith-n">0</b><small id="faith-inc"></small>
+    </div>
+    <div class="meter focus" id="m-focus" title="神意: 介入に使う集中力。1か月で1回復、ミッション成功で+1"><span class="lbl">神意</span><span id="focus"></span></div>
+    <div class="meter acts" id="m-acts" title="今月があとどれくらいで終わるか"><span class="lbl">今月</span><span id="acts"></span></div>
+    <div class="meter sus" id="m-sus" title="疑念: 人物たちの女神への疑いの平均。左の人物それぞれにもある">
+      <span class="lbl">疑念</span><b id="sus-n">0</b><span class="bar"><i id="sus-bar"></i></span>
+    </div>
+    <div class="when"><span id="date"></span><small id="goal"></small></div>
+    <button id="btn-settings" aria-label="設定">⚙</button>
+    <div id="settings">
+      <label><input type="checkbox" id="set-music" checked> 音楽(BGM)</label>
+      <label><input type="checkbox" id="set-voice" checked> ボイス</label>
+      <label><input type="checkbox" id="set-sfx" checked> 効果音</label>
+      <button id="btn-help">遊び方</button>
+      <button id="btn-title">タイトルへ</button>
+      <p class="small credit">声: VOICEVOX:四国めたん / 九州そら / No.7 / 白上虎太郎 / 冥鳴ひまり / 青山龍星 / 東北イタコ / 波音リツ / 玄野武宏</p>
+    </div>
+  </header>
+
+  <aside id="people" data-tut="2"><div class="ph">重要人物</div><div id="plist"></div></aside>
+
+  <main id="center">
+    <nav id="fronts" data-tut="1"></nav>
+    <div id="stage">
+      <canvas id="field"></canvas>
+      <div id="bubble"><img alt=""><div><b></b><p></p></div></div>
+      <div id="result"></div>
+      <div id="pick-hint"></div>
+      <div id="peace-warn"></div>
+      <div id="mission"></div>
+    </div>
+  </main>
+
+  <section id="deck" data-tut="3">
+    <div class="cols" id="cards"></div>
+    <div class="side">
+      <div class="tbtns"><button id="btn-fight" class="primary" data-tut="7">▶ 時間を動かす</button><button id="btn-speed">速さ ×1</button></div>
+      <div id="policy"></div>
+      <div class="used-h">できごと</div>
+      <div id="used"></div>
+    </div>
+  </section>
+</div>
+
+<div id="title" class="overlay">
+  <div class="title-art"></div>
+  <div class="title-box">
+    <div class="logo">GODDESS</div>
+    <div class="logo-sub">― 三つの戦線 ―</div>
+    <p class="catch">人族には希望を。魔族には憎しみを。<br>この戦争を、決して終わらせてはならない。</p>
+    <button id="btn-new" class="primary big">はじめから</button>
+    <button id="btn-cont">つづきから</button>
+    <p class="small">音とボイスが出ます。音量に気をつけてください。</p>
+  </div>
+</div>
+
+<div id="intro-video" class="overlay"><video playsinline preload="auto"></video><button class="link">とばす ▶</button></div>
+
+<div id="scene" class="overlay">
+  <div class="sc-bg" id="sc-bg"></div>
+  <div class="sc-box">
+    <div class="t-body"><img class="t-face" alt=""><div class="t-main"><div class="t-name"></div><div class="t-text"></div></div></div>
+    <div id="sc-choice"></div>
+    <div class="sc-btns"><button id="sc-skip" class="link">とばす</button><button id="sc-next" class="primary">次へ ▶</button></div>
+  </div>
+</div>
+
+<div id="coach"><div class="spot" id="coach-spot"></div><div class="cbubble" id="coach-bubble"><img src="assets/face/demon_a.jpg" alt=""><div><div class="cname">影の側近ノクス</div><div id="coach-text"></div><div class="cbtns"><button id="coach-skip" class="link">とばす</button><button id="coach-next" class="primary">次へ</button></div></div></div></div>
+
+<div id="ending" class="overlay"><div id="end-card"></div></div>
+
+<div id="help" class="overlay">
+  <div class="help-card">
+    <h2>遊び方</h2>
+    <p>あなたは<b>女神アステリア</b>。人族には救いの神と信じられていますが、本当は魔族を生んだ黒幕です。人族と魔族の戦争を<b>5年つづけ、祈りを1050集める</b>のが目的です。</p>
+    <ol>
+      <li><b>上の札</b>で、北部・中央・南部の3つの戦線を切りかえて見ます。前線(白い点線)が金色の帯にあるとちょうどいい。札には<b>戦線の特徴</b>と<b>来月の予兆</b>(援軍・魔物・和平の準備)が出ます。先を読んで動きましょう。</li>
+      <li><b>時間は流れつづけ</b>、3つの戦線はずっと戦っています(1か月=10秒)。「一時停止」や「速さ」で調節できます。</li>
+      <li><b>下のカード</b>から介入をえらび、<b>対象</b>(戦線か人物)をクリックします。いつでも使えますが、信仰を使い、使ったカードはしばらく休みます。えらんでいる間は時間が止まります。</li>
+      <li>前線がまんなかにあるほど、人族はたくさん祈り、信仰が増えます。</li>
+      <li><b>物語</b>は全5章。章ごとに出来事がランダムにえらばれるので、遊ぶたびに話が変わります。物語の中で「女神は、どうする?」と聞かれたら、えらんでください。</li>
+      <li>勇者と魔王は、助けるほど<b>★成長</b>します。人族と魔族のどちらをよく助けたかで、4章からの<b>ルート</b>が変わります。</li>
+    </ol>
+    <ul>
+      <li><b>神の奇跡</b>(金): 人族を助ける。</li>
+      <li><b>邪神の囁き</b>(紫): 魔族を助ける。その戦線にいる人族の人物は疑いをもつ。勇者のいない戦線でこっそり使うのがコツ。</li>
+      <li><b>運命の操作</b>(青): 天災・人物の移動・記憶の改ざん・和平の妨害など。</li>
+      <li>人物の<b>疑念</b>が高くなると物語が進みます。勇者と魔王の疑念が両方80をこえると、2人が手を組んで女神に反逆します。</li>
+      <li>カードには<b>信仰</b>と<b>神意</b>(●が最大3つ。1か月で1回復)を使います。強いカードほど神意を多く使うので、ここぞという時のために残しておきましょう。</li>
+      <li><b>物語のできごと</b>が起きると、戦場で<b>ミッション</b>が始まります(防衛・反撃・隠蔽・決戦)。ゲージは2本あり、片方を守るともう片方が苦しくなります。ミッション中はカードの効果が変わり、神意は回復しません。結果は4通りあります。</li>
+      <li><b>神託の方針</b>: ミッションがない時に1つ選ぶと、60秒のあいだに来る次のミッションが有利になります(神意は使いません)。</li>
+      <li>ミッションの結果は<b>記憶</b>として残り、あとのミッションや物語で返ってきます(逃した敵の隊長が戻ってくる、など)。</li>
+      <li>カードの<span style="color:#ff8a9a">赤い文字</span>は副作用です。</li>
+      <li>人物は自分の目的で勝手に動きます(勇者は苦しい戦場へ、魔将は独断で攻撃…)。</li>
+      <li>負け: どちらかの城が2つ落ちる/和平が結ばれる/神殺しの同盟に倒される/5年で祈りが1100に届かない。</li>
+    </ul>
+    <button id="help-close" class="primary">閉じる</button>
+  </div>
+</div>
+
+<script src="js/data/characters.js"></script>
+<script src="js/data/events.js"></script>
+<script src="js/data/voices.js"></script>
+<script src="js/data/story.js"></script>
+<script src="js/game/state.js"></script>
+<script src="js/game/story.js"></script>
+<script src="js/game/mission.js"></script>
+<script src="js/audio/bgm.js"></script>
+<script src="js/audio/voice.js"></script>
+<script src="js/game/field.js"></script>
+<script src="js/ui/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
