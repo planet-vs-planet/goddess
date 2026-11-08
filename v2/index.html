@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GODDESS 戦場版</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header id="top">
+    <div id="gface" class="gface" title="女神アステリア(あなた)"><img src="assets/img/face_light.jpg" alt=""><img class="dark" src="assets/img/face_dark.jpg" alt=""></div>
+    <div class="meter faith" title="信仰: 人族の祈り。介入に使う。前線がまんなかにあるほど多く集まる">
+      <span class="lbl">信仰</span><b id="faith-n">0</b><span class="bar"><i id="faith-bar"></i></span>
+    </div>
+    <div class="meter sus" title="疑念: 女神の正体への疑い。邪神の囁きと運命の操作で増える。100になると反逆される">
+      <span class="lbl">疑念</span><b id="sus-n">0</b><span class="bar"><i id="sus-bar"></i></span>
+    </div>
+    <div class="when"><span id="date"></span><small id="goal"></small></div>
+    <button id="btn-settings" aria-label="設定">⚙ 設定</button>
+    <div id="settings">
+      <label><input type="checkbox" id="set-music" checked> 音楽(BGM)</label>
+      <label><input type="checkbox" id="set-voice" checked> ボイス</label>
+      <label><input type="checkbox" id="set-sfx" checked> 効果音</label>
+      <label><input type="checkbox" id="set-auto"> セリフを自動で送る</label>
+      <button id="btn-help">遊び方</button>
+      <button id="btn-title">タイトルへ</button>
+    </div>
+  </header>
+
+  <main id="stage">
+    <canvas id="field"></canvas>
+    <div id="frontgauge">
+      <span class="fg-side h">人族の城</span>
+      <div class="fg-track"><div class="fg-zone"></div><div class="fg-mark" id="fg-mark"></div></div>
+      <span class="fg-side d">魔族の城</span>
+      <div class="fg-label" id="fg-label"></div>
+    </div>
+    <div id="peace-warn" class="warnchip">和平が進んでいる! 次に和平の話が来たら止めて</div>
+    <div id="revolt-warn" class="warnchip revolt"></div>
+  </main>
+
+  <section id="card" class="card">
+    <div class="ev-img" id="ev-img"></div>
+    <div class="t-head"><span id="month-label"></span><span id="card-hint"></span></div>
+    <div class="t-body">
+      <img class="t-face" alt="">
+      <div class="t-main"><div class="t-name"></div><div class="t-text"></div></div>
+    </div>
+    <div id="choices"></div>
+  </section>
+</div>
+
+<div id="title" class="overlay">
+  <div class="title-art"></div>
+  <div class="title-box">
+    <div class="logo">GODDESS</div>
+    <div class="logo-sub">― 女神の戦場 ―</div>
+    <p class="catch">人族には希望を。魔族には憎しみを。<br>この戦争を、決して終わらせてはならない。</p>
+    <button id="btn-new" class="primary big">はじめから</button>
+    <button id="btn-cont">つづきから</button>
+    <p class="small">音とボイスが出ます。音量に気をつけてください。</p>
+  </div>
+</div>
+
+<div id="scene" class="overlay">
+  <div class="sc-bg" id="sc-bg"></div>
+  <div class="sc-box">
+    <div class="t-body"><img class="t-face" alt=""><div class="t-main"><div class="t-name"></div><div class="t-text"></div></div></div>
+    <div class="sc-btns"><button id="sc-skip" class="link">とばす</button><button id="sc-next" class="primary">次へ ▶</button></div>
+  </div>
+</div>
+
+<div id="ending" class="overlay"><div id="end-card"></div></div>
+
+<div id="help" class="overlay">
+  <div class="help-card">
+    <h2>遊び方</h2>
+    <p>あなたは<b>女神アステリア</b>。人族からは救いの神とあがめられていますが、本当は魔族を生み、魔王に力を与えている黒幕です。</p>
+    <p><b>目的</b>: 人族と魔族の戦争を<b>5年つづける</b>こと。</p>
+    <ul>
+      <li>毎月、だれかが話しかけてきます。<b>3つの中から1つ</b>えらんでください。</li>
+      <li>えらぶと、戦場ですぐに結果が見えます。そのあと1か月の戦いがはじまります。</li>
+      <li><b>前線</b>(白い点線)を、まんなかの<b>金色の帯</b>の中にたもつのがコツです。帯の中にあるほど、人族はたくさん祈ります(信仰が増える)。</li>
+      <li>前線がどちらかの城まで届くと、片方が滅びて負けです。和平が結ばれても負けです。</li>
+      <li><b>神の奇跡</b>(金色)は人族を強くします。<b>邪神の囁き</b>(紫)は魔族を強くしますが、<b>疑念</b>が増えます。<b>運命の操作</b>(青)は両方に働きかけます。</li>
+      <li>疑念が上がると物語が進み、100になると勇者と魔王が手を組んで女神に反逆してきます。</li>
+    </ul>
+    <p class="small">ボイスはブラウザの読み上げ機能を使っています。設定から音楽・ボイス・効果音を切りかえられます。</p>
+    <button id="help-close" class="primary">閉じる</button>
+  </div>
+</div>
+
+<script src="js/data/characters.js"></script>
+<script src="js/data/events.js"></script>
+<script src="js/game/state.js"></script>
+<script src="js/audio/bgm.js"></script>
+<script src="js/audio/voice.js"></script>
+<script src="js/game/field.js"></script>
+<script src="js/ui/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
